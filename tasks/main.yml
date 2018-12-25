@@ -1,4 +1,7 @@
 ---
+- include: "{{ansible_distribution}}.yml"       # only for on-premiss
+  when: ansible_distribution == 'RedHat'
+
 - name: Wait for python
   wait_for:
     path: /var/cache/ansible

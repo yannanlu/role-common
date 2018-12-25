@@ -1,0 +1,34 @@
+---
+- name: Create dir of /var/cache/ansible
+  file:
+    path: /var/cache/ansible
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Get stats of epel pkg
+  stat:
+    path: "/var/cache/ansible/{{common_epel_repo_pkg}}"
+    get_md5: no
+    get_checksum: no
+  register: st_epel_pkg
+
+- name: Gets the pkg
+  get_url:
+    url: "{{common_epel_repo_url}}/{{common_epel_repo_pkg}}"
+    dest: /var/cache/ansible/
+  when: not st_epel_pkg.stat.exists
+  register: new_pkg_common
+
+- name: Install epel repo
+  yum:
+    name: "/var/cache/ansible/{{common_epel_repo_pkg}}"
+    state: present
+  when: new_pkg_common is changed or not st_epel_pkg.stat.exists
+
+- name: Install policycoreutils-python
+  yum:
+    name: policycoreutils-python
+    state: present
+    update_cache: yes
