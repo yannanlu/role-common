@@ -1,6 +1,7 @@
 ---
 common_wait_timeout: 600
 common_systemd_dir: "{{'/usr/lib/systemd' if ansible_distribution in ['RedHat','CentOS'] else '/lib/systemd'}}"
+common_repo_url: s3://ylutest
 common_epel_repo_url: https://dl.fedoraproject.org/pub/epel
 common_epel_repo_pkg: epel-release-latest-7.noarch.rpm
 common_iptables: disabled
@@ -11,6 +12,7 @@ common_pkg_list:
   - lsof
   - expect
   - python-pip
+  - "{{'nmap-ncat' if ansible_distribution in ['RedHat','CentOS'] else 'netcat'}}"
 
 common_module_list:
   - boto
