@@ -1,6 +1,7 @@
 ---
 common_wait_timeout: 600
 common_systemd_dir: "{{'/usr/lib/systemd' if ansible_distribution in ['RedHat','CentOS'] else '/lib/systemd'}}"
+common_systemctl_cmd: "{{'/usr/bin/systemctl' if ansible_distribution in ['RedHat','CentOS'] else '/bin/systemctl'}}"
 common_repo_url: s3://ylutest
 common_epel_repo_url: https://dl.fedoraproject.org/pub/epel
 common_epel_repo_pkg: epel-release-latest-7.noarch.rpm
@@ -8,10 +9,8 @@ common_iptables: disabled
 
 common_pkg_list:
   - jq
-  - git
-  - lsof
   - expect
-  - python-pip
+  - python3-pip
   - "{{'nmap-ncat' if ansible_distribution in ['RedHat','CentOS'] else 'netcat'}}"
 
 common_module_list:
@@ -20,7 +19,7 @@ common_module_list:
 
 common_sysctl_props:
   - net.ipv4.tcp_tw_reuse
-  - net.ipv4.tcp_tw_recycle
   - net.ipv6.conf.all.disable_ipv6
   - net.ipv6.conf.default.disable_ipv6
   - net.ipv6.conf.lo.disable_ipv6
+#  - net.ipv4.tcp_tw_recycle
